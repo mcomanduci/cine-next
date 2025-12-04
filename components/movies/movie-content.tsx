@@ -1,13 +1,18 @@
 import LoadingGrid from "@/components/movies/loading-grid";
 import SimilarMovies from "@/components/movies/similar-movies";
+import { getMovieDetails } from "@/lib/api-tmdb";
 import Image from "next/image";
 import { Suspense } from "react";
 
 interface MovieContentProps {
-  movie: any; // Movie details from TMDB API
+  params: Promise<{
+    id: string;
+  }>;
 }
 
-export function MovieContent({ movie }: MovieContentProps) {
+export async function MovieContent({ params }: MovieContentProps) {
+  const { id } = await params;
+  const movie = await getMovieDetails(id);
   return (
     <>
       <script type="application/ld+json" suppressHydrationWarning>

@@ -38,12 +38,6 @@ export async function generateMetadata({ params }: MoviePageProps) {
   };
 }
 
-async function MoviePageContent({ params }: MoviePageProps) {
-  const { id } = await params;
-  const movie = await getMovieDetails(id);
-  return <MovieContent movie={movie} />;
-}
-
 function MovieSkeleton() {
   return (
     <div className="mx-auto max-w-7xl pb-4 px-4 py-8 sm:px-6 lg:px-8">
@@ -64,7 +58,7 @@ function MovieSkeleton() {
 export default function MoviePage({ params }: MoviePageProps) {
   return (
     <Suspense fallback={<MovieSkeleton />}>
-      <MoviePageContent params={params} />
+      <MovieContent params={params} />
     </Suspense>
   );
 }
