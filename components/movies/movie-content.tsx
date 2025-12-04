@@ -39,15 +39,21 @@ export function MovieContent({ movie }: MovieContentProps) {
         <div className="mx-5 mt-5">
           <h1 className="font-title text-4xl font-semibold">{movie.title}</h1>
           <p className="mt-1 text-sm space-x-4 text-gray-500">
-            <span className="mt-2 text-sm">
-              {movie.genres
-                .map((genre: { id: number; name: string }) => genre.name)
-                .join(", ")}
-            </span>
-            <span className="mt-2 text-sm">
-              {movie.release_date.slice(0, 4)}
-            </span>
-            <span className="mt-2 text-sm">{movie.runtime} minutos</span>
+            {movie.genres && movie.genres.length > 0 && (
+              <span className="mt-2 text-sm">
+                {movie.genres
+                  .map((genre: { id: number; name: string }) => genre.name)
+                  .join(", ")}
+              </span>
+            )}
+            {movie.release_date && (
+              <span className="mt-2 text-sm">
+                {movie.release_date.slice(0, 4)}
+              </span>
+            )}
+            {movie.runtime && (
+              <span className="mt-2 text-sm">{movie.runtime} minutos</span>
+            )}
           </p>
           <p className="mt-4 text-[15px] text-gray-400">{movie.overview}</p>
         </div>
