@@ -18,21 +18,6 @@ export async function getPopularMovies() {
   return top10;
 }
 
-export async function getPopularAllMovies() {
-  "use cache";
-  cacheLife("hours");
-  cacheTag("popular-movies");
-
-  const response = await fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=1`
-  );
-  if (!response.ok) {
-    throw new Error("Failed to fetch popular movies");
-  }
-  const data = await response.json();
-  return data.results;
-}
-
 export async function getTopRatedMovies() {
   "use cache";
   cacheLife("hours");

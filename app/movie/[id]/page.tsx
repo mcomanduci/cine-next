@@ -1,6 +1,11 @@
 import { Suspense } from "react";
 import { MovieContent } from "@/components/movies/movie-content";
-import { getMovieDetails, getPopularAllMovies } from "@/lib/api-tmdb";
+import {
+  getMovieDetails,
+  getPopularMovies,
+  getTopRatedMovies,
+  getUpcomingMovies,
+} from "@/lib/api-tmdb";
 import { Movie } from "@/types/movies";
 
 interface MoviePageProps {
@@ -10,9 +15,19 @@ interface MoviePageProps {
 }
 
 export async function generateStaticParams() {
-  const movies = await getPopularAllMovies();
+  const [popularMovies, topRatedMovies, upcomingMovies] = await Promise.all([
+    getPopularMovies(),
+    getTopRatedMovies(),
+    getUpcomingMovies(),
+  ]);
 
-  return movies.map((movie: Movie) => ({
+  // Combine all movies and remove duplicates
+  const allMovies = [...popularMovies, ...topRatedMovies, ...upcomingMovies];
+  const uniqueMovies = Array.from(
+    new Map(allMovies.map((movie) => [movie.id, movie])).values()
+  );
+
+  return uniqueMovies.map((movie: Movie) => ({
     id: movie.id.toString(),
   }));
 }
