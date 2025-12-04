@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { MovieContent } from "@/components/movies/movie-content";
-import { getMovieDetails, getPopularMovies } from "@/lib/api-tmdb";
+import { getMovieDetails, getPopularAllMovies } from "@/lib/api-tmdb";
 import { Movie } from "@/types/movies";
 
 interface MoviePageProps {
@@ -10,8 +10,8 @@ interface MoviePageProps {
 }
 
 export async function generateStaticParams() {
-  const movies = await getPopularMovies();
-  
+  const movies = await getPopularAllMovies();
+
   return movies.map((movie: Movie) => ({
     id: movie.id.toString(),
   }));
