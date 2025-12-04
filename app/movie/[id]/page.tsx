@@ -55,10 +55,13 @@ function MovieSkeleton() {
   );
 }
 
-export default function MoviePage({ params }: MoviePageProps) {
+export default async function MoviePage({ params }: MoviePageProps) {
+  const { id } = await params;
+  const movie = await getMovieDetails(id);
+
   return (
     <Suspense fallback={<MovieSkeleton />}>
-      <MovieContent params={params} />
+      <MovieContent movie={movie} />
     </Suspense>
   );
 }
