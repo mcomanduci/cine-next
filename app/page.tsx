@@ -1,3 +1,11 @@
+import HomeTitle from "@/components/home/home-title";
+import MoviesGrid from "@/components/movies/movies-grid";
+import {
+  getPopularMovies,
+  getTopRatedMovies,
+  getUpcomingMovies,
+} from "@/lib/api-tmdb";
+
 export async function generateMetadata() {
   return {
     title: "CineNext - Descubra Filmes Populares, Em Breve e Bem Avaliados",
@@ -29,13 +37,6 @@ export async function generateMetadata() {
     },
   };
 }
-import HomeTitle from "@/components/home/home-title";
-import MoviesGrid from "@/components/movies/movies-grid";
-import {
-  getPopularMovies,
-  getTopRatedMovies,
-  getUpcomingMovies,
-} from "@/lib/api-tmdb";
 
 export default async function Home() {
   const popularMovies = await getPopularMovies();
