@@ -26,9 +26,36 @@ export async function generateMetadata({
     },
   };
 }
+import { Suspense } from "react";
 import MovieCard from "@/components/movies/movie-card";
 import { searchMovies } from "@/lib/api-tmdb";
 import { Movie } from "@/types/movies";
+import LoadingGrid from "@/components/movies/loading-grid";
+
+async function SearchResults({ query }: { query: string }) {
+  const movies = await searchMovies(query);
+
+  if (!movies || movies.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <h1 className="text-2xl font-bold">Nenhum resultado encontrado</h1>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-4">
+      <h2 className="text-xl">{`Resultados para: ${query}`}</h2>
+      <ul className="flex flex-wrap gap-4 mt-4">
+        {movies.map((movie: Movie) => (
+          <li key={movie.id}>
+            <MovieCard movie={movie} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default async function SearchPage({
   searchParams,
@@ -37,29 +64,17 @@ export default async function SearchPage({
 }) {
   const resolvedSearchParams = await searchParams;
   const query = resolvedSearchParams?.query || "";
-  const movies = await searchMovies(query);
-
-  if (!movies || movies.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-2xl font-bold">Nenhum resultado encontrado</h1>
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto max-w-7xl pb-4 px-4 py-8 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-bold">Página de Busca</h1>
-      {query && (
-        <div className="mt-4">
-          <h2 className="text-xl">{`Resultados para: ${query}`}</h2>
-          <ul className="flex flex-wrap gap-4 mt-4">
-            {movies.map((movie: Movie) => (
-              <li key={movie.id}>
-                <MovieCard movie={movie} />
-              </li>
-            ))}
-          </ul>
+      {query ? (
+        <Suspense fallback={<LoadingGrid />}>
+          <SearchResults query={query} />
+        </Suspense>
+      ) : (
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <p className="text-lg text-muted-foreground">Digite algo para buscar</p>
         </div>
       )}
     </div>
