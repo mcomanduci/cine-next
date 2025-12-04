@@ -5,6 +5,7 @@ import {
   getTopRatedMovies,
   getUpcomingMovies,
 } from "@/lib/api-tmdb";
+import { cacheLife } from "next/cache";
 
 export async function generateMetadata() {
   return {
@@ -39,6 +40,8 @@ export async function generateMetadata() {
 }
 
 export default async function Home() {
+  "use cache";
+  cacheLife("days");
   const popularMovies = await getPopularMovies();
   const topRatedMovies = await getTopRatedMovies();
   const upcomingMovies = await getUpcomingMovies();

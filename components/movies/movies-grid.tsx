@@ -1,6 +1,7 @@
 import MovieCard from "./movie-card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Movie } from "@/types/movies";
+import { cacheLife } from "next/cache";
 
 export default async function MoviesGrid({
   movieList,

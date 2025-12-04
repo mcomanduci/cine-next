@@ -1,9 +1,14 @@
+import { cacheLife, cacheTag } from "next/cache";
+
 const apiKey = process.env.TMDB_API_KEY;
 
 export async function getPopularMovies() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("popular-movies");
+
   const response = await fetch(
-    `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=1`,
-    { next: { revalidate: 3600 } }
+    `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=pt-BR&page=1`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch popular movies");
@@ -14,9 +19,12 @@ export async function getPopularMovies() {
 }
 
 export async function getTopRatedMovies() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("top-rated-movies");
+
   const response = await fetch(
-    `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR&page=1`,
-    { next: { revalidate: 3600 } }
+    `https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=pt-BR&page=1`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch top rated movies");
@@ -27,9 +35,12 @@ export async function getTopRatedMovies() {
 }
 
 export async function getUpcomingMovies() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("upcoming-movies");
+
   const response = await fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=pt-BR&page=1`,
-    { next: { revalidate: 3600 } }
+    `https://api.themoviedb.org/3/movie/upcoming?api_key=${apiKey}&language=pt-BR&page=1`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch upcoming movies");
@@ -40,9 +51,12 @@ export async function getUpcomingMovies() {
 }
 
 export async function getMovieDetails(id: string) {
+  "use cache";
+  cacheLife("days");
+  cacheTag(`movie-${id}`);
+
   const response = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`,
-    { next: { revalidate: 3600 } }
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=pt-BR`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch movie details");
@@ -52,9 +66,12 @@ export async function getMovieDetails(id: string) {
 }
 
 export async function getSimilarMovies(id: string) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(`similar-movies-${id}`);
+
   const response = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}&language=pt-BR&page=1`,
-    { next: { revalidate: 3600 } }
+    `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}&language=pt-BR&page=1`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch similar movies");
@@ -66,11 +83,14 @@ export async function getSimilarMovies(id: string) {
 }
 
 export async function searchMovies(query: string) {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag(`search-${query}`);
+
   const response = await fetch(
     `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=${encodeURIComponent(
       query
-    )}&page=1&include_adult=false`,
-    { next: { revalidate: 3600 } }
+    )}&page=1&include_adult=false`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch search results");
