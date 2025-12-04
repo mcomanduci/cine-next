@@ -1,11 +1,20 @@
 import { Suspense } from "react";
 import { MovieContent } from "@/components/movies/movie-content";
-import { getMovieDetails } from "@/lib/api-tmdb";
+import { getMovieDetails, getPopularMovies } from "@/lib/api-tmdb";
+import { Movie } from "@/types/movies";
 
 interface MoviePageProps {
   params: Promise<{
     id: string;
   }>;
+}
+
+export async function generateStaticParams() {
+  const movies = await getPopularMovies();
+  
+  return movies.map((movie: Movie) => ({
+    id: movie.id.toString(),
+  }));
 }
 
 export async function generateMetadata({ params }: MoviePageProps) {
