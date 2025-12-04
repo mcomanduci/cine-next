@@ -37,7 +37,10 @@ function SearchResultsSkeleton() {
         <div className="h-8 w-64 bg-gray-200 animate-pulse rounded" />
         <div className="flex flex-wrap gap-4 mt-4">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="w-[185px] h-[278px] bg-gray-200 animate-pulse rounded" />
+            <div
+              key={i}
+              className="w-[185px] h-[278px] bg-gray-200 animate-pulse rounded"
+            />
           ))}
         </div>
       </div>
